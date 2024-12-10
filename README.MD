@@ -7,12 +7,12 @@
 ## Participantes do projeto
 
 
-**Filipe de Medeiros Alves**
-- Responsável por [um texto legal aqui]
+**Filipe [resto do nome]**
+- Outro texto legal aqui
 
 
-**Lucas Rafael Arruda de Amorim**
-- Responsável por [um texto legal aqui]
+**Lucas [resto do nome]**
+- Outro texto legal aqui
 
 
 **Rafael Araújo de Andrade**

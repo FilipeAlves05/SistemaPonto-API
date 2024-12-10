@@ -18,7 +18,7 @@
 **Rafael Araújo de Andrade**
 - Responsável por [um texto legal aqui]
 - <a href="https://github.com/leafaraujo">Github</a>
-- <a href="www.linkedin.com/in/rafael-araújo-de-andrade-b7b06a165">Linkedin</a>
+- <a href="www.linkedin.com/in/rafael-araújo-de-andrade-b7b06a165" target="_blank">Linkedin</a>
 
 
 ## Tecnologias utilizadas:

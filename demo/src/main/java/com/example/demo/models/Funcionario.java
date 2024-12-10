@@ -67,7 +67,7 @@ public class Funcionario {
     }
 
 
-    //Equals e hashCode 
+    //Equals e hashCode
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

@@ -2,7 +2,7 @@
 
 ## Descrição do projeto
 
-- Esse projeto foi feito como atividade avaliativa da disciplina LP2 (Linguagem de Programação 2), no curso de Bacharelado em Tecnologia da Informação da UFRN, na qual tivemos que criar uma API de sistema de ponto para ser utilizada em alguma empresa qualquer. Nesse projeto, utilizamos Spring Boot com Gradle para gerenciar as dependências e MySQL como banco de dados. Com esse projeto, tivemos a capacidade de aprender na prática como que funciona um sistema web e aplicar conceitos base de orientação a objetos (OOP). Além disso tudo, tivemos a oportunidade de trabalhar pensando em conceitos voltados para a área de negócios do desenvolvimento de aplicações web.
+- Esse projeto foi feito como atividade avaliativa da disciplina LP2 (Linguagem de Programação 2), no curso de Bacharelado em Tecnologia da Informação da UFRN, na qual tivemos que criar uma API de sistema de ponto para ser utilizada em alguma empresa qualquer. Nesse projeto, utilizamos Spring Boot com Gradle para gerenciar as dependências e MySQL como banco de dados. Com esse projeto, tivemos a capacidade de aprender na prática como que funciona um sistema web e aplicar conceitos base de orientação a objetos (OOP). Além disso tudo, tivemos a oportunidade de trabalhar pensando em conceitos voltados para a área de negócios do desenvolvimento de aplicações web e assim melhorar o nosso código como um todo para dar uma solução eficiente para uma empresa registrar os pontos de seus funcionários.
 
 ## Participantes do projeto
 
@@ -16,7 +16,7 @@
 
 
 **Rafael Araújo de Andrade**
-- Responsável por [um texto legal aqui]
+- Responsável por implementar a parte de services do sistema, organizando um CRUD para fazer alterações dentro do banco de dados [continuação de um texto legal aqui]...
 - <a href="https://github.com/leafaraujo">Github</a>
 
 ## Tecnologias utilizadas:

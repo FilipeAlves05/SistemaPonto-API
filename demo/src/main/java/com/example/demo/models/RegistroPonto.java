@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 // Trata a classe como uma tabela no banco de dados
@@ -23,7 +25,8 @@ public class RegistroPonto {
     @Column(name = "id" , unique = true)
     private Integer id;
 
-    @Column(name = "funcionario", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "funcionario_id", nullable = false)
     private Funcionario funcionario;
 
     @Column(name = "horario", nullable = false)

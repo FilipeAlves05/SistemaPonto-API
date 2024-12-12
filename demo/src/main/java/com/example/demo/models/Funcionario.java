@@ -1,5 +1,7 @@
 package com.example.demo.models;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -7,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
@@ -25,7 +28,7 @@ public class Funcionario implements Serializable {
 
     @Column(name = "cpf" , unique = true , nullable = false)
     @Size(min = 11 , max = 11)
-    private int cpf;
+    private String cpf;
 
     @Column(name = "nome" , nullable = false , length = 100)
     @Size(min = 2)
@@ -35,12 +38,15 @@ public class Funcionario implements Serializable {
     @Size(min = 2)
     private String cargo;
 
+    @OneToMany (mappedBy="funcionario")
+    private List<RegistroPonto> registroPontos = new ArrayList<RegistroPonto>();
+
     //Construtor Vazio (Necessário para o SpringBoot)
     public Funcionario() {
     }
 
     //Construtor de Funcionario
-    public Funcionario(Integer id, @Size(min = 14 , max = 14) int cpf , @Size(min = 2) String nome, @Size(min = 2) String cargo) {
+    public Funcionario(Integer id, @Size(min = 14 , max = 14) String cpf , @Size(min = 2) String nome, @Size(min = 2) String cargo) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
@@ -72,20 +78,24 @@ public class Funcionario implements Serializable {
         this.cargo = cargo;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
+    public List<RegistroPonto> getRegistroPontos() {
+        return registroPontos;
+    }
 
-<<<<<<< HEAD
+    public void setRegistroPontos(List<RegistroPonto> registroPontos) {
+        this.registroPontos = registroPontos;
+    }
+
+
     //Equals e hashCode
-=======
-    //Equals e HashCode 
->>>>>>> f5806c4be9e8c8f5cb2f0afe2e36efd913c1d982
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

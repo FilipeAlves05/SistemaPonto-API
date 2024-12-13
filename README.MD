@@ -16,7 +16,7 @@
 
 
 **Rafael Araújo de Andrade**
-- Responsável por implementar a parte de services do sistema, organizando um CRUD para fazer alterações dentro do banco de dados [continuação de um texto legal aqui]...
+- Responsável por implementar a parte de services do sistema, organizando um CRUD para fazer alterações dentro do banco de dados tanto do lado do servidor(services) como do lado do Frontend (controllers).
 - <a href="https://github.com/leafaraujo">Github</a>
 
 ## Tecnologias utilizadas:

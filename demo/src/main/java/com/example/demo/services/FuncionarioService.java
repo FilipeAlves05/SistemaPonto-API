@@ -16,8 +16,6 @@ public class FuncionarioService {
     @Autowired
     RegistroPontoRepository registroPontoRepository;
 
-    //Na nossa lógica de negócio implementada não haverá o update, pois são dados únicos
-
     //Read simples para encontrar o funcionário no banco de dados
     public Funcionario findByID(Integer ID){
         Optional<Funcionario> funcionario = this.funcionarioRepository.findById(ID);
@@ -36,23 +34,11 @@ public class FuncionarioService {
 
     //Update usuário, caso seja necessário em algum momento, por erros de input ou qualquer outra ocasião
     @Transactional
-    public Funcionario updateNomeDoFuncionario(Funcionario funcionario){
+    public Funcionario updateFuncionario(Funcionario funcionario){
         Funcionario newFuncionario = findByID(funcionario.getId());
         newFuncionario.setNome(funcionario.getNome());
-        return funcionarioRepository.save(newFuncionario);
-    }
-
-    @Transactional
-    public Funcionario updateCpfDoFuncionario(Funcionario funcionario){
-        Funcionario newFuncionario = findByID(funcionario.getId());
+        newFuncionario.setCargo(funcionario.getCargo());
         newFuncionario.setCpf(funcionario.getCpf());
-        return funcionarioRepository.save(newFuncionario);
-    }
-
-    @Transactional
-    public Funcionario updateCargoDoFuncionario(Funcionario funcionario){
-        Funcionario newFuncionario = findByID(funcionario.getId());
-        newFuncionario.setNome(funcionario.getCargo());
         return funcionarioRepository.save(newFuncionario);
     }
 

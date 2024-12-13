@@ -33,7 +33,7 @@ public class RegistroPontoService {
         return registroPonto;
     }
 
-    /*FIXME: Precisamos verificar na classe RegistroPonto a forma como está sendo armazenado, eu acho que devemos armazenar a hora 
+    /*TODO: Precisamos verificar na classe RegistroPonto a forma como está sendo armazenado, eu acho que devemos armazenar a hora 
     de entrada/saída, além de fazer a subtração de uma pela outra para sabermos a quantidade de horas que o funcionário trabalhou no dia.
     Assim conseguiremos saber mais ao certo o que deve ser atualizado nessa parte do código.
 

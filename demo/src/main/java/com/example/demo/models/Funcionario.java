@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 // Trata a classe como uma tabela no banco de dados
@@ -20,6 +24,13 @@ import jakarta.validation.constraints.Size;
 public class Funcionario implements Serializable {
     public static final String TABLE_NAME = "funcionario";
 
+    public interface CreateFuncionario { 
+
+    }
+    public interface UpdateFuncionario{
+
+    }
+
     //Atributos de Funcionario (gerando colunas para cada atributo e tratando "id" como único)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,15 +38,21 @@ public class Funcionario implements Serializable {
     private Integer id;
 
     @Column(name = "cpf" , unique = true , nullable = false)
-    @Size(min = 11 , max = 11)
+    @NotNull(groups = {CreateFuncionario.class, UpdateFuncionario.class})
+    @NotEmpty(groups = {CreateFuncionario.class, UpdateFuncionario.class})
+    @Size(groups = {CreateFuncionario.class, UpdateFuncionario.class}, min = 11 , max = 11)
     private String cpf;
 
     @Column(name = "nome" , nullable = false , length = 100)
-    @Size(min = 2)
+    @NotNull(groups = {CreateFuncionario.class, UpdateFuncionario.class})
+    @NotEmpty(groups = {CreateFuncionario.class, UpdateFuncionario.class})
+    @Size(groups = {CreateFuncionario.class, UpdateFuncionario.class}, min = 2)
     private String nome;
 
     @Column(name = "cargo" , nullable = false , length = 100)
-    @Size(min = 2)
+    @NotNull(groups = {CreateFuncionario.class, UpdateFuncionario.class})
+    @NotEmpty(groups = {CreateFuncionario.class, UpdateFuncionario.class})
+    @Size(groups = {CreateFuncionario.class, UpdateFuncionario.class}, min = 2)
     private String cargo;
 
     @OneToMany (mappedBy="funcionario")
@@ -86,6 +103,7 @@ public class Funcionario implements Serializable {
         this.cpf = cpf;
     }
 
+    @JsonIgnore
     public List<RegistroPonto> getRegistroPontos() {
         return registroPontos;
     }

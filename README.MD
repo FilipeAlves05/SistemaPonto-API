@@ -33,8 +33,8 @@
     - Explicar funcionalidades dessa classe
 - Registro ponto
     - Explicar funcionalidades dessa classe
-- ControladorFuncionario
-    - Explicar funcionalidades dessa classe
-ControladorRegistroPonto
-    - Explicar funcionalidades dessa classe
+- Services
+    - Serve para pegar a requisição do Controller e buscar no banco de dados a informação requisitada por eles, essa classe conta com algumas verificações para deletar ou criar, adicionar ou deletar um usuário, sempre verificando se ele já existe no banco de dados ou não.
+- Controllers
+    - Serve para comunicação direta com o frontend/serviço que vai consumir a API, ele faz a ligação entre o banco de dados e o frontednd.
 

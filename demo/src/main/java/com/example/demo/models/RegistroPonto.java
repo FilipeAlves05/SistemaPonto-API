@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -39,11 +41,25 @@ public class RegistroPonto {
     @JoinColumn(name = "funcionario_id", nullable = false)
     private Funcionario funcionario;
 
-    @Column(name = "horario", nullable = false)
+    @Column(name = "data", nullable = false)
     @NotNull(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
     @NotEmpty(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
-    private LocalDateTime horario;
+    private LocalDate date;
 
+    @Column(name = "horario_entrada", nullable = false)
+    @NotNull(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    @NotEmpty(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    private LocalTime horarioEntrada;
+
+    @Column(name = "horario_saída", nullable = false)
+    @NotNull(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    @NotEmpty(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    private LocalTime horarioSaida;
+
+    @Column(name = "horas_trabalhadas", nullable = false)
+    @NotNull(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    @NotEmpty(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    private Duration horasTrabalhadas;
 
     //Construtor Vazio (Necessário para o SpringBoot)
     public RegistroPonto(){
@@ -51,17 +67,42 @@ public class RegistroPonto {
     
 
     //Construtor de Funcionario
-    public RegistroPonto(Integer id, Funcionario funcionario, LocalDateTime horario) {
+    public RegistroPonto(Integer id, Funcionario funcionario, LocalDate date, LocalTime horarioEntrada, LocalTime horarioSaida) {
         this.id = id;
         this.funcionario = funcionario;
-        this.horario = horario;
+        this.date = date;
+        this.horarioEntrada = horarioEntrada;
+        this.horarioSaida = horarioSaida;
+        this.horasTrabalhadas = Duration.between(this.horarioEntrada, this.horarioSaida);
     }
 
 
     //Getters e Setters
+
+    
     public Integer getId() {
         return id;
     }
+
+    public LocalTime getHorarioSaida() {
+        return horarioSaida;
+    }
+
+
+    public void setHorarioSaida(LocalTime horarioSaida) {
+        this.horarioSaida = horarioSaida;
+    }
+
+
+    public Duration getHorasTrabalhadas() {
+        return horasTrabalhadas;
+    }
+
+
+    public void setHorasTrabalhadas(Duration horasTrabalhadas) {
+        this.horasTrabalhadas = horasTrabalhadas;
+    }
+
 
     public void setId(Integer id) {
         this.id = id;
@@ -75,12 +116,12 @@ public class RegistroPonto {
         this.funcionario = funcionario;
     }
 
-    public LocalDateTime getHorario() {
-        return horario;
+    public LocalTime getHorarioEntrada() {
+        return horarioEntrada;
     }
 
-    public void setHorario(LocalDateTime horario) {
-        this.horario = horario;
+    public void setHorarioEntrada(LocalTime horario) {
+        this.horarioEntrada = horario;
     }
 
 
@@ -103,7 +144,7 @@ public class RegistroPonto {
         if (!Objects.equals(this.funcionario, other.funcionario)) {
             return false;
         }
-        return Objects.equals(this.horario, other.horario);
+        return Objects.equals(this.horarioEntrada, other.horarioEntrada);
     }
 
     @Override
@@ -114,3 +155,4 @@ public class RegistroPonto {
         return result;
     }
 }
+

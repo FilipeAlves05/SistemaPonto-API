@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 // Trata a classe como uma tabela no banco de dados
 @Entity
@@ -19,9 +21,17 @@ import jakarta.persistence.Table;
 public class RegistroPonto {
     public static final String TABLE_NAME = "registroPonto";
 
+    public interface CreateRegistroPonto{ 
+
+    }
+    public interface UpdateRegistroPonto{
+
+    }
     //Atributos de RegistroPonto (gerando colunas para cada atributo e tratando "id" como único)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    @NotEmpty(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
     @Column(name = "id" , unique = true)
     private Integer id;
 
@@ -30,6 +40,8 @@ public class RegistroPonto {
     private Funcionario funcionario;
 
     @Column(name = "horario", nullable = false)
+    @NotNull(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
+    @NotEmpty(groups = {CreateRegistroPonto.class, UpdateRegistroPonto.class})
     private LocalDateTime horario;
 
 

@@ -59,6 +59,7 @@ public class ControladorRegistroPonto{
         return ResponseEntity.noContent().build();
     }
 
+}
 
 
 }

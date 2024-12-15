@@ -4,6 +4,7 @@ import com.example.demo.models.RegistroPonto;
 import com.example.demo.repositories.RegistroPontoRepository;
 import com.example.demo.services.FuncionarioService;
 
+import java.time.LocalTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +30,19 @@ public class RegistroPontoService {
     public RegistroPonto createRegistroPonto(RegistroPonto registroPonto){
         Funcionario funcionario = this.funcionarioService.findByID(registroPonto.getFuncionario().getId());
         registroPonto.setFuncionario(funcionario);
+        registroPonto.setHorarioEntrada(registroPonto.getHorarioEntrada());
+        registroPonto.setHorarioSaida(null);
         registroPonto = registroPontoRepository.save(registroPonto);
         return registroPonto;
     }
 
-    /*TODO: Precisamos verificar na classe RegistroPonto a forma como está sendo armazenado, eu acho que devemos armazenar a hora 
-    de entrada/saída, além de fazer a subtração de uma pela outra para sabermos a quantidade de horas que o funcionário trabalhou no dia.
-    Assim conseguiremos saber mais ao certo o que deve ser atualizado nessa parte do código.
-
     @Transactional
-    public RegistroPonto updateRegistroPonto(){
-
-    }*/
+    public RegistroPonto updateRegistroPonto(RegistroPonto registroPonto){
+        RegistroPonto newRegistroPonto = findByID(registroPonto.getId());
+        newRegistroPonto.setHorarioSaida(registroPonto.getHorarioSaida());
+        newRegistroPonto.setHorasTrabalhadas(registroPonto.getHorasTrabalhadas());
+        return registroPontoRepository.save(newRegistroPonto);
+    }
 
     public void deleteById(Integer ID){
         findByID(ID);

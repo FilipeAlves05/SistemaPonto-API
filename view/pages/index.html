@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ponto do Dia</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f5f0;
+            font-family: sans-serif;
+        }
+
+        .logo {
+            width: 200px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 300px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: #fff;
+            color: #555;
+            transition: background-color 0.3s, color 0.3s;
+            text-align: center; /* Adicionado para centralizar o texto */
+        }
+
+        .btn:hover {
+            background-color: #eee;
+            cursor: pointer;
+        }
+
+        #loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+     <h1>Bem-vindo(a) ao Ponto do Dia</h1>
+    <img class="logo" src="../src/Gemini_Generated_Image_a7tja0a7tja0a7tj.jpg" alt="Logo da Empresa">
+    <main id="div-tipo-login">
+        <div class="btn-container">
+            <button type="button" class="btn" id="btn-logar-funcionario" onclick="logarFuncionario()">
+                Entrar como Funcionário
+            </button>
+            <button type="button" class="btn" id="btn-logar-adm" onclick="logarAdm()">
+                Entrar como Administrador
+            </button>
+        </div>
+    </main>
+    <div id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        // Seu código JavaScript (logarFuncionario, logarAdm, etc.)
+        // ... (mesmo código de antes)
+        const url = "http://localhost:8080/funcionario";
+
+        function logarFuncionario() {
+            mostrarLoading();
+            setTimeout(() => {
+                window.location.href = "login_funcionario.html";
+            }, 1000);
+        }
+
+        function logarAdm() {
+            mostrarLoading();
+            setTimeout(() => {
+                window.location.href = "login_administrador.html";
+            }, 2000);
+        }
+
+        function mostrarLoading() {
+            document.getElementById("div-tipo-login").classList.add("hidden");
+            document.getElementById("loading").style.display = "block";
+        }
+
+        async function getApi(url) {
+            try {
+                const response = await fetch(url, { method: "GET" });
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log("Dados da API:", data);
+            } catch (error) {
+                console.error("Erro ao obter dados da API:", error);
+            }
+        }
+
+        getApi(url);
+    </script>
+</body>
+
+</html>

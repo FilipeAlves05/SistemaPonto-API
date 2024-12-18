@@ -6,17 +6,11 @@
 
 ## Participantes do projeto
 
-
 **Filipe de Medeiros Alves**
-- Responsável por [um texto legal aqui]
-
 
 **Lucas Rafael Arruda de Amorim**
-- Responsável por [um texto legal aqui]
-
 
 **Rafael Araújo de Andrade**
-- Responsável por implementar a parte de services do sistema, organizando um CRUD para fazer alterações dentro do banco de dados tanto do lado do servidor(services) como do lado do Frontend (controllers).
 - <a href="https://github.com/leafaraujo">Github</a>
 
 ## Tecnologias utilizadas:

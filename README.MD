@@ -11,7 +11,6 @@
 **Lucas Rafael Arruda de Amorim**
 
 **Rafael Araújo de Andrade**
-- <a href="https://github.com/leafaraujo">Github</a>
 
 ## Tecnologias utilizadas:
 

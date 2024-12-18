@@ -50,7 +50,7 @@ public class Funcionario {
     @Size(groups = {CreateFuncionario.class, UpdateFuncionario.class},min = 10, max = 10)
     private String dataNascimento;
 
-    @Column(name = "cargo", length = 11, nullable = false, unique = true)
+    @Column(name = "cargo", length = 20, nullable = false, unique = true)
     @NotNull(groups = {CreateFuncionario.class, UpdateFuncionario.class})
     @NotEmpty(groups = {CreateFuncionario.class, UpdateFuncionario.class})
     @Size(groups = {CreateFuncionario.class, UpdateFuncionario.class}, min = 3, max = 20)

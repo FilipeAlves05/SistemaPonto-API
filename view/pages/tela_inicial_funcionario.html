@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Ponto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        @media (max-width: 600px) {
+            .button-container {
+                flex-direction: column;
+            }
+        }
+        
+    #loading {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+    </style>
+</head>
+<body>
+
+    <button id="btnSair" onclick="sairDaConta()">Sair da Conta</button>
+    <h2>Registrar Ponto</h2>
+
+    <div class="button-container">
+        <button id="btnEntrada" onclick="registerTime('Entrada')">Entrada</button>
+        <button id="btnSaida" onclick="registerTime('Saída')" disabled>Saída</button>
+    
+    </div>
+
+    <div id="dateTimeDisplay"></div>
+    <div id="message"></div>
+
+    <table id="recordsTable">
+        <thead>
+            <tr>
+                <th>CPF</th>
+                <th>Data de Nascimento</th>
+                <th>Tipo</th>
+                <th>Data e Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="loading">
+        <div class="loader"></div>
+      </div>
+    <script>
+
+        function sairDaConta(){
+         mostrarLoading();
+         setTimeout(() => {
+            window.location.href = "index.html";
+        }, 500);
+        }
+        function mostrarLoading() {
+            document.getElementById("loading").style.display = "block";
+        }
+        
+        function registerTime(type) {
+            const now = new Date();
+            const today = now.toLocaleDateString('pt-BR');
+            const formattedDateTime = now.toLocaleString('pt-BR');
+            const display = document.getElementById('dateTimeDisplay');
+            const message = document.getElementById('message');
+            const btnEntrada = document.getElementById('btnEntrada');
+            const btnSaida = document.getElementById('btnSaida');
+
+            // Recuperar CPF e Data de Nascimento do LocalStorage
+            const cpf = localStorage.getItem("cpf");
+            const dataNascimento = localStorage.getItem("dataNascimento");
+
+            let records = JSON.parse(localStorage.getItem('pontoRecords')) || [];
+            // Filtrar os registros pelo CPF e Data de Nascimento do usuário atual
+            let todayEntry = records.find(record => record.cpf === cpf && record.dataNascimento === dataNascimento && record.type === 'Entrada' && record.date === today);
+
+            message.textContent = ''; // Limpa a mensagem
+
+            if (type === 'Entrada') {
+                if (todayEntry) {
+                    message.textContent = 'Você já registrou sua entrada hoje.';
+                    return;
+                }
+                btnEntrada.disabled = true;
+                btnSaida.disabled = false;
+                records.push({ cpf: cpf, dataNascimento: dataNascimento, type: type, date: today, dateTime: formattedDateTime });
+            } else if (type === 'Saída') {
+                if (!todayEntry) {
+                    message.textContent = 'Registre a entrada primeiro.';
+                    return;
+                }
+                btnEntrada.disabled = false;
+                btnSaida.disabled = true;
+                // Verifica se já existe um registro de saída para o dia e o CPF atual
+                let todayExit = records.find(record => record.cpf === cpf && record.dataNascimento === dataNascimento && record.type === 'Saída' && record.date === today);
+                if (!todayExit) {
+                    records.push({ cpf: cpf, dataNascimento: dataNascimento, type: type, date: today, dateTime: formattedDateTime });
+                }
+            }
+
+            localStorage.setItem('pontoRecords', JSON.stringify(records));
+            display.innerHTML = `Registrado ${type} em: ${formattedDateTime}`;
+            updateRecordsTable();
+        }
+
+        function updateRecordsTable() {
+            // Recuperar CPF e Data de Nascimento do LocalStorage
+            const cpf = localStorage.getItem("cpf");
+            const dataNascimento = localStorage.getItem("dataNascimento");
+
+            const records = JSON.parse(localStorage.getItem('pontoRecords')) || [];
+            // Filtrar os registros pelo CPF e Data de Nascimento do usuário atual
+            const filteredRecords = records.filter(record => record.cpf === cpf && record.dataNascimento === dataNascimento);
+            const tableBody = document.getElementById('recordsTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+
+            filteredRecords.forEach(record => {
+                let row = tableBody.insertRow();
+                let cpfCell = row.insertCell();
+                let dataNascimentoCell = row.insertCell();
+                let typeCell = row.insertCell();
+                let dateTimeCell = row.insertCell();
+
+                cpfCell.textContent = record.cpf;
+                dataNascimentoCell.textContent = record.dataNascimento;
+                typeCell.textContent = record.type;
+                dateTimeCell.textContent = record.dateTime;
+            });
+        }
+
+        // Atualiza a tabela ao carregar a página
+        window.onload = updateRecordsTable;
+    </script>
+
+</body>
+</html>

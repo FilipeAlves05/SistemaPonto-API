@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funcionário</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f8f5f0;
+      font-family: sans-serif;
+    }
+
+    .container {
+      max-width: 500px;
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      /* Espaçamento entre botões */
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      background-color: #fff;
+      color: #555;
+      transition: background-color: 0.3s, color 0.3s;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #433e3e;
+      cursor: pointer;
+    }
+
+    #loading {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #mensagem-erro {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Entrar como funcionário</h1>
+
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-6">
+        <p>Digite seu CPF:</p>
+        <input type="text" id="cpf" class="form-control" placeholder="Apenas números">
+        <p>Digite sua data de nascimento:</p>
+        <input type="date" id="dataNascimento" class="form-control">
+        <div id="mensagem-erro"></div>
+        <div class="btn-container">
+          <button class="btn btn-primary" onclick="validarFuncionario()">Logar-se</button>
+          <button id="btn-voltar-tela-tipo-login" onclick="voltarTelaTipoLogin()"
+            class="btn btn-secondary">Voltar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function validarFuncionario() {
+      const cpf = document.getElementById("cpf").value;
+      const dataNascimento = document.getElementById("dataNascimento").value;
+      const mensagemErro = document.getElementById("mensagem-erro");
+
+      // Formatar a data de nascimento para comparar com o formato do banco de dados (dd/mm/yyyy)
+      const partesData = dataNascimento.split('-'); // Separa a string em ano, mês e dia
+      const dataNascimentoFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`; // Formata para dd/mm/yyyy
+
+      mostrarLoading();
+
+      let id = 1;
+      let funcionarioEncontrado = false;
+
+      function buscarFuncionario() {
+        fetch(`http://localhost:8080/funcionario/${id}`)
+          .then(response => {
+            if (response.status === 404) {
+              // Funcionário não encontrado com esse ID, tenta o próximo
+              throw new Error("Funcionario nao encontrado");
+            } else if (!response.ok) {
+              throw new Error('Erro ao buscar dados do servidor.');
+            }
+            return response.json();
+          })
+          .then(funcionario => {
+            const cpfValido = funcionario.cpf === cpf;
+            const dataNascimentoValida = funcionario.dataNascimento === dataNascimentoFormatada;
+
+            console.log(`ID: ${id} - CPF: ${funcionario.cpf} (Digitado: ${cpf}), Data de Nascimento: ${funcionario.dataNascimento} (Digitado: ${dataNascimentoFormatada}), Válido: ${cpfValido && dataNascimentoValida}`);
+
+            if (cpfValido && dataNascimentoValida) {
+              funcionarioEncontrado = true;
+
+              // Armazenar CPF e Data de Nascimento no LocalStorage
+              localStorage.setItem("cpf", cpf);
+              localStorage.setItem("dataNascimento", dataNascimento);
+
+              mensagemErro.textContent = ""; // Limpa mensagem de erro
+              setTimeout(() => {
+                window.location.href = "tela_inicial_funcionario.html";
+              }, 500);
+            } else {
+              // Não é o funcionário, tenta o próximo ID
+              id++;
+              buscarFuncionario();
+            }
+          })
+          .catch(error => {
+            console.error("Erro:", error);
+            if (!funcionarioEncontrado) {
+              if (error.message === "Funcionario nao encontrado") {
+                id++;
+                buscarFuncionario();
+              } else {
+                mensagemErro.textContent = "CPF ou data de nascimento inválidos!";
+              }
+            }
+          })
+          .finally(() => {
+            if (!funcionarioEncontrado) {
+              esconderLoading();
+            }
+          });
+      }
+
+      buscarFuncionario(); // Inicia a busca
+    }
+
+    function voltarTelaTipoLogin() {
+      mostrarLoading();
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 500);
+    }
+
+    function mostrarLoading() {
+      document.getElementById("loading").style.display = "block";
+    }
+
+    function esconderLoading() {
+      document.getElementById("loading").style.display = "none";
+    }
+  </script>
+</body>
+
+</html>

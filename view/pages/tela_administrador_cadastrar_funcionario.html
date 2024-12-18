@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ponto do Dia - Cadastro de Funcionário</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f8f5f0;
+      font-family: sans-serif;
+    }
+
+    .container {
+      max-width: 500px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      background-color: #fff;
+      color: #555;
+      transition: background-color 0.3s, color 0.3s;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #433e3e;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="text-center fw-light mb-4">Cadastrar novo Funcionário</h1>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <form id="funcionarioForm" onsubmit="cadastrarFuncionario(event)">
+          <div class="mb-3">
+            <label for="nome" class="form-label">Nome completo:</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
+            <div class="invalid-feedback">
+              Por favor, informe o nome completo do funcionário.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="cpf" class="form-label">CPF:</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" inputmode="numeric" pattern="[0-9]{11}"
+              placeholder="Digite apenas os 11 números" required>
+            <div class="invalid-feedback">
+              Por favor, informe um CPF válido com 11 dígitos.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="dataNascimento" class="form-label">Data de Nascimento:</label>
+            <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" required>
+            <div class="invalid-feedback">
+              Por favor, informe a data de nascimento do funcionário.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="cargo" class="form-label">Cargo:</label>
+            <select class="form-select" id="cargo" name="cargo" required>
+              <option value="">Selecione um cargo</option>
+              <option value="Desenvolvedor">Desenvolvedor</option>
+              <option value="Analista">Analista</option>
+              <option value="Gerente">Gerente</option>
+              <option value="Estagiario">Estagiário</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor, selecione o cargo do funcionário.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Cadastrar Funcionário</button>
+          <button type="button" class="btn btn-primary" onclick="voltar_tela_inicial_administrador()">Voltar</button>
+        </form>
+        <div id="mensagem"></div>
+      </div>
+    </div>
+  </div>
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
+  <script>
+    function voltar_tela_inicial_administrador() {
+      window.location.href = "tela_inicial_administrador.html";
+    }
+  
+    function sairDaConta() {
+      mostrarLoading();
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 500);
+    }
+  
+    function mostrarLoading() {
+      document.getElementById("loading").style.display = "block";
+    }
+  
+    function cadastrarFuncionario(event) {
+      event.preventDefault();
+  
+      var nome = document.getElementById("nome").value;
+      var cpf = document.getElementById("cpf").value;
+      var dataNascimento = document.getElementById("dataNascimento").value;
+      var cargo = document.getElementById("cargo").value;
+  
+      // Validar o CPF (verificar se tem 11 dígitos)
+      if (cpf.length !== 11) {
+        alert("CPF inválido! O CPF deve conter 11 dígitos.");
+        return;
+      }
+  
+      // Formatar a data de nascimento para dd/mm/yyyy
+      var dataNascimentoFormatada = new Date(dataNascimento).toLocaleDateString('pt-BR');
+  
+      var funcionario = {
+        cargo: cargo,
+        nome: nome,
+        cpf: cpf,
+        dataNascimento: dataNascimentoFormatada
+      };
+  
+      console.log("Enviando requisição para cadastrar funcionário:", funcionario);
+  
+      fetch('http://localhost:8080/funcionario', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(funcionario)
+      })
+        .then(response => {
+          console.log("Resposta do servidor:", response);
+          if (!response.ok) {
+            // Se o status for 400, tenta extrair a mensagem de erro do JSON
+            if (response.status === 400) {
+              return response.json().then(errorData => {
+                // Exibe a mensagem de erro do JSON, se disponível
+                console.error("Erro 400:", errorData);
+                throw new Error(errorData.message || 'Erro ao cadastrar funcionário.');
+              });
+            } else {
+              console.error("Erro ao cadastrar funcionário:", response.status);
+              throw new Error('Erro ao cadastrar funcionário.');
+            }
+          }
+          // Aqui, tentamos fazer o parse do JSON, mesmo que a resposta seja OK.
+          // Se o parse falhar (por exemplo, com "Unexpected end of JSON input"),
+          // o catch abaixo será acionado.
+          return response.json();
+        })
+        .then(data => {
+          console.log("Funcionário cadastrado com sucesso:", data);
+          document.getElementById("mensagem").innerHTML = "Funcionário cadastrado com sucesso!";
+          document.getElementById("funcionarioForm").reset();
+        })
+        .catch(error => {
+          console.error("Erro na requisição:", error);
+          // Verifica se o erro é "Unexpected end of JSON input"
+          if (error.message.includes("Unexpected end of JSON input")) {
+            document.getElementById("mensagem").innerHTML = "Cadastro do funcionário realizado com sucesso!";
+            document.getElementById("funcionarioForm").reset();
+          } else {
+            document.getElementById("mensagem").innerHTML = error.message;
+          }
+        });
+    }
+  </script>
+</body>
+
+</html>

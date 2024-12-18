@@ -6,11 +6,18 @@
 
 ## Participantes do projeto
 
+
 **Filipe de Medeiros Alves**
+- Responsável pela criação das classes Funcionário e Registro Ponto e suas integrações ao banco de dados; 
+
 
 **Lucas Rafael Arruda de Amorim**
+- Responsável pela criação do Front-End da API e sua relação com os controllers;
+
 
 **Rafael Araújo de Andrade**
+- Responsável por implementar a parte de services do sistema, organizando um CRUD para fazer alterações dentro do banco de dados tanto do lado do servidor(services) como do lado do Frontend (controllers).
+- <a href="https://github.com/leafaraujo">Github</a>
 
 ## Tecnologias utilizadas:
 
@@ -23,9 +30,9 @@
 ## Classes
 
 - Funcionario
-    - Explicar funcionalidades dessa classe
+    - Classe destinada a definir de um funcionário dentro do programa, bem como sua implementação ao banco de dados; 
 - Registro ponto
-    - Explicar funcionalidades dessa classe
+    - Classe destinada a definir de um  registro de ponto dentro do programa, bem como sua implementação ao banco de dados; 
 - Services
     - Serve para pegar a requisição do Controller e buscar no banco de dados a informação requisitada por eles, essa classe conta com algumas verificações para deletar ou criar, adicionar ou deletar um usuário, sempre verificando se ele já existe no banco de dados ou não.
 - Controllers

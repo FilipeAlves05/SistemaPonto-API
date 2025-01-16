@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.models.RegistroPonto;
-import com.example.demo.services.FuncionarioService;
 import com.example.demo.services.RegistroPontoService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/registro-ponto")
+@RequestMapping("/registro_ponto")
 @Validated
 public class RegistroPontoController {
     
@@ -68,3 +67,4 @@ public class RegistroPontoController {
     }
 
 }
+

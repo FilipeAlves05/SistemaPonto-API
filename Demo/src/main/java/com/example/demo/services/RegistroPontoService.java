@@ -38,6 +38,7 @@ public class RegistroPontoService {
         Funcionario funcionario = this.funcionarioService.findById(registroPonto.getFuncionario().getId());
         registroPonto.setId(null);
         registroPonto.setFuncionario(funcionario);
+        registroPonto.setHorasTrabalhadas(Duration.between(registroPonto.getHorarioEntrada(), registroPonto.getHorarioSaida()));
         registroPonto = this.registroPontoRepository.save(registroPonto);
         return registroPonto;
     }

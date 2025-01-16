@@ -29,22 +29,23 @@ public class RegistroPonto {
     @JoinColumn(name = "funcionario_id", nullable = false, updatable = false)
     private Funcionario funcionario;
 
-    @Column(name = "data", unique = true)
+    @Column(name = "data")
     private LocalDate dataPonto;
 
-    @Column(name = "horario_entrada", unique = true)
+    @Column(name = "horario_entrada")
     private LocalTime horarioEntrada;
 
-    @Column(name = "horario_saida", unique = true)
+    @Column(name = "horario_saida")
     private LocalTime horarioSaida;
 
-    @Column(name = "horas_trabalhadas", unique = true)
+    @Column(name = "horas_trabalhadas")
     private Duration horasTrabalhadas;
 
     public RegistroPonto() {}
 
-    public RegistroPonto(Long id, Funcionario funcionario, LocalDate dataPonto, LocalTime horarioEntrada,
-            LocalTime horarioSaida) {
+    /* Isso acontece porque no momento em que o funcionário bater o ponto, ele ainda não tem horário de saída definido,
+    para não deixar como nulo, preferi trabalhar com ele sendo o horário de entrada no momento em que o ponto é batido*/
+    public RegistroPonto(Long id, Funcionario funcionario, LocalDate dataPonto, LocalTime horarioEntrada, LocalTime horarioSaida) {
         this.id = id;
         this.funcionario = funcionario;
         this.dataPonto = dataPonto;
@@ -131,8 +132,9 @@ public class RegistroPonto {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         return result;
     }
-
     
+}
+
 
 
 
